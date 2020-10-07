@@ -125,6 +125,9 @@ function editTask(taskId){
   //Now we can target that form and replace the things inside it with our element
   document.querySelector("input[name='task-name']").value= taskName;
   document.querySelector("select[name='task-type']").value= taskType;
+  document.querySelector("#save-task").textContent = "Save Task";
+  //This gives the form the id of the current task so it doesnt get lost
+  formEl.setAttribute("data-task-id", taskId);
 }
 //Delete the task
 function deleteTask(taskId){
