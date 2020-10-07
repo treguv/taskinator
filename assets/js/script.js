@@ -10,6 +10,7 @@ In this case we are adding event listener to button, that listens for the click,
 var buttonEl = document.querySelector("#save-task");
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 var formEl = document.querySelector("#task-form");
+var pageContentEl = document.querySelector("#page-content");
 //Counter
 var taskIdCounter = 0;
 
@@ -48,7 +49,7 @@ function createTaskEl(taskDataObj){
   listItemEl.appendChild(taskInfoEl);
   var taskActionsEl = createTaskActions(taskIdCounter);
   listItemEl.appendChild(taskActionsEl);
-  
+
   // add entire list item to list
   tasksToDoEl.appendChild(listItemEl);
   taskIdCounter++;
@@ -93,5 +94,46 @@ function createTaskActions(taskId) {
   //Pass back complete div
   return actionContainerEl;
 }
+//Handles the delet function
+function taskButtonHandler(event){
+  console.log(event.target);
+  //check to see if the delete button was clicked
+  if(event.target.matches(".delete-btn")){//Check to see if the clicked item matches delete button id
+    console.log("You clicked the delete button!")
+    //if you got here you know youre in the delete button
+    var taskId = event.target.getAttribute("data-task-id");
+    deleteTask(taskId);
+  }
+  //Edit button
+  if(event.target.matches(".edit-btn")){
+    console.log("You clicked the edit button");
+    var taskId = event.target.getAttribute("data-task-id");
+    editTask(taskId);
+  }
+}
+//Edit the task
+function editTask(taskId){
+  var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+  console.log(taskSelected);
+  //select elements from inside the li
+  //We can use the querySelector on any object
+  var taskName = taskSelected.querySelector("h3.task-name").textContent;
+  console.log(taskName);
+  var taskType = taskSelected.querySelector("span.task-type").textContent;//Looks span inside element with the class task-type
+  console.log(taskType);
 
+  //Now we can target that form and replace the things inside it with our element
+  document.querySelector("input[name='task-name']").value= taskName;
+  document.querySelector("select[name='task-type']").value= taskType;
+}
+//Delete the task
+function deleteTask(taskId){
+  //select element with class .task-item where data-task-id = taskId
+  var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
+  console.log(taskSelected);
+  taskSelected.remove();
+}
+//Add task listener
 formEl.addEventListener("submit",  taskFormHandler);
+//page event listener
+pageContentEl.addEventListener("click",taskButtonHandler);//passes in element by default?
