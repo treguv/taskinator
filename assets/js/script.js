@@ -185,11 +185,32 @@ function dragTaskHandler(event){
   var taskId = event.target.getAttribute("data-task-id");
   event.dataTransfer.setData("text/plain", taskId);
   var getId = event.dataTransfer.getData("text/plain");
-  console.log("getId:", getId, typeof getId);
+  //console.log("getId:", getId, typeof getId);
 }
 //Handle the drop zones
 function dropZoneDragHandler(event){
-  //TODO
+  var taskListEl  = event.target.closest(".task-list"); // Assign this to the closest task-list parent. If it isnt found its null
+  if(taskListEl){
+    event.preventDefault(); //Stops the default behavior
+  }
+}
+//Handle the task being dropped
+function dropTaskHandler(event){
+  var id = event.dataTransfer.getData("text/plain");
+  var draggableElement = document.querySelector("[data-task-id='" + id + "']");
+  dropZoneEl = event.target.closest(".task-list");
+  var statusType = dropZoneEl.id;
+  var statusSelectEl = draggableElement.querySelector("select[name='status-change'");
+  //CHange the selected status based on what we dropped it on
+  if (statusType === "tasks-to-do"){
+    statusSelectEl.selectedIndex = 0;
+  }else if (statusType === "tasks-in-progress"){
+    statusSelectEl.selectedIndex = 1;
+  }else if (statusType === "tasks-completed"){
+    statusSelectEl.selectedIndex = 2;
+  }
+  //Move the eleemnt to the right column
+  dropZoneEl.appendChild(draggableElement);
 }
 //Add task listener
 formEl.addEventListener("submit",  taskFormHandler);
@@ -200,4 +221,6 @@ pageContentEl.addEventListener("change", taskStatusChangeHandler);
 //Listener for dragging
 pageContentEl.addEventListener("dragstart",dragTaskHandler);
 //listener for the drop zones
-pageContentEl.addEventListener("dragover", dropZoneDragHandler);
+pageContentEl.addEventListener("dragover", dropZoneDragHandler);// No parenthesis pass as callback
+//Listen for the item to be dropped
+pageContentEl.addEventListener("drop", dropTaskHandler);
