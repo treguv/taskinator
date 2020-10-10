@@ -66,8 +66,8 @@ function createTaskEl(taskDataObj){
   tasksToDoEl.appendChild(listItemEl);
   taskDataObj.id = taskIdCounter;
   tasks.push(taskDataObj);
+  saveTasks();
   taskIdCounter++;
-  console.log(taskDataObj);
 }
 //Create the action buttons forthe task
 function createTaskActions(taskId) {
@@ -158,6 +158,8 @@ function completeEditTask(taskName, taskType, taskId){
       tasks[i].type = taskType;
     }
   }
+  //Save tasks
+  saveTasks();
   //Clean up work
   formEl.removeAttribute("data-task-id");
   document.querySelector("#save-task").textContent = 'Add Task';
@@ -177,7 +179,7 @@ function deleteTask(taskId){
   }
   //reassign the updated array to original
   tasks = updatedTaskArr;
-  console.log(tasks);
+  saveTasks();
 }
 //Change to different column
 function taskStatusChangeHandler(event){
@@ -205,7 +207,7 @@ function taskStatusChangeHandler(event){
       tasks[i].status = statusValue;
     }
   }
-  console.log(tasks);
+  saveTasks();
 }
 //Handle the dragstart event on tasks
 function dragTaskHandler(event){
@@ -248,6 +250,13 @@ function dragLeaveHandler(event){
   if (taskListEl) { //If 
     taskListEl.removeAttribute("style");
   }
+}
+
+//Saving to local storage
+function saveTasks(){
+  //Save the array to the local storage
+  //localStorage.setItem("tasks",tasks) This wont work becasue local storage can onlystore strings
+  localStorage.setItem("tasks",JSON.stringify(tasks)); // Turns obj into json string
 }
 //Add task listener
 formEl.addEventListener("submit",  taskFormHandler);
