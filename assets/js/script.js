@@ -111,17 +111,17 @@ function createTaskActions(taskId) {
 }
 //Handles the delet function
 function taskButtonHandler(event){
-  console.log(event.target);
+  //console.log(event.target);
   //check to see if the delete button was clicked
   if(event.target.matches(".delete-btn")){//Check to see if the clicked item matches delete button id
-    console.log("You clicked the delete button!")
+    // console.log("You clicked the delete button!")
     //if you got here you know youre in the delete button
     var taskId = event.target.getAttribute("data-task-id");
     deleteTask(taskId);
   }
   //Edit button
   if(event.target.matches(".edit-btn")){
-    console.log("You clicked the edit button");
+    // console.log("You clicked the edit button");
     var taskId = event.target.getAttribute("data-task-id");
     editTask(taskId);
   }
@@ -129,13 +129,13 @@ function taskButtonHandler(event){
 //Edit the task
 function editTask(taskId){
   var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
-  console.log(taskSelected);
+  // console.log(taskSelected);
   //select elements from inside the li
   //We can use the querySelector on any object
   var taskName = taskSelected.querySelector("h3.task-name").textContent;
-  console.log(taskName);
+  // console.log(taskName);
   var taskType = taskSelected.querySelector("span.task-type").textContent;//Looks span inside element with the class task-type
-  console.log(taskType);
+  // console.log(taskType);
 
   //Now we can target that form and replace the things inside it with our element
   document.querySelector("input[name='task-name']").value= taskName;
@@ -146,7 +146,7 @@ function editTask(taskId){
 }
 //finalises the editing of the task
 function completeEditTask(taskName, taskType, taskId){
-  console.log(taskName, taskType,taskId);
+  // console.log(taskName, taskType,taskId);
   //Find the corresponsing task.
   var taskSelected = document.querySelector(".task-item[data-task-id ='"+taskId+"']");
   //Set new values
@@ -168,7 +168,7 @@ function completeEditTask(taskName, taskType, taskId){
 function deleteTask(taskId){
   //select element with class .task-item where data-task-id = taskId
   var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
-  console.log(taskSelected);
+  // console.log(taskSelected);
   taskSelected.remove();
   //make second array to house all but removed item
   var updatedTaskArr = [];
@@ -183,8 +183,8 @@ function deleteTask(taskId){
 }
 //Change to different column
 function taskStatusChangeHandler(event){
-  console.log(event.target);
-  console.log(event.target.getAttribute("data-task-id"));
+  // console.log(event.target);
+  // console.log(event.target.getAttribute("data-task-id"));
 
   //get task item id
   var taskId = event.target.getAttribute("data-task-id");
@@ -286,7 +286,7 @@ function loadTasks(){
     taskActionsEl = createTaskActions(tasks[i].id);
     //append task options to li
     listItemEl.appendChild(taskActionsEl);
-    console.log(listItemEl);
+    //(listItemEl);
     //Check the tasks status
     //add back to do
     if(tasks[i].status === "to do"){
