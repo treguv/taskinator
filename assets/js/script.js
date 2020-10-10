@@ -258,6 +258,56 @@ function saveTasks(){
   //localStorage.setItem("tasks",tasks) This wont work becasue local storage can onlystore strings
   localStorage.setItem("tasks",JSON.stringify(tasks)); // Turns obj into json string
 }
+//loadTasks
+function loadTasks(){
+  //Get task items from local storage
+  tasks = localStorage.getItem("tasks");
+  if(tasks === null){
+    tasks = [];
+    return false;
+  }
+  //convert from stringified form to obj array
+  tasks = JSON.parse(tasks);
+  //itterate through array to create tasks
+  for(var i = 0; i < tasks.length; i++){
+    tasks[i].id = taskIdCounter;
+    //Make the list element
+    listItemEl = document.createElement("li");
+    listItemEl.className = "task-item";
+    listItemEl.setAttribute("data-task-id", tasks[i].id);
+    listItemEl.setAttribute("draggable", "true");
+    //Make div to house stuff
+    taskInfoEl = document.createElement("div");
+    taskInfoEl.className = "task-info";
+    taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
+    //append the div into li
+    listItemEl.appendChild(taskInfoEl);
+    //make task options
+    taskActionsEl = createTaskActions(tasks[i].id);
+    //append task options to li
+    listItemEl.appendChild(taskActionsEl);
+    console.log(listItemEl);
+    //Check the tasks status
+    //add back to do
+    if(tasks[i].status === "to do"){
+      listItemEl.querySelector("select[name='status-change']").selectedIndex = 0;
+      tasksToDoEl.appendChild(listItemEl);
+    }
+    //add back in progress
+    if(tasks[i].status === "in progress"){
+      listItemEl.querySelector("select[name='status-change']").selectedIndex = 1;
+      tasksInProgressEl.appendChild(listItemEl);
+    }
+    //add back completed
+    if(tasks[i].status === "completed"){
+      listItemEl.querySelector("select[name='status-change']").selectedIndex = 2;
+      tasksCompletedEl.appendChild(listItemEl);
+    }
+    taskIdCounter++;
+  }
+
+}
+loadTasks();
 //Add task listener
 formEl.addEventListener("submit",  taskFormHandler);
 //page event listener
